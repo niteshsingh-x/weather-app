@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Main Weather Card -->
   <div class="container">
     <h1>🌤️ Weather App</h1>
     
@@ -19,7 +20,7 @@
     <div id="weather-info" class="hidden">
       <div class="header-row">
         <h2 id="city-name">--</h2>
-        <button id="pin-btn" class="pin-btn">📌</button>
+        <button id="pin-btn" class="pin-btn">🔓</button>
       </div>
       
       <div class="weather-icon">
@@ -43,9 +44,12 @@
     <div id="error-msg" class="hidden">
       <p>🚫 City not found! Please try again.</p>
     </div>
+  </div>
 
-    <!-- New: Saved Locations Section -->
-    <div id="saved-locations" class="hidden">
+  <!-- Saved Locations (Moved Outside the Main Box) -->
+  <div id="saved-locations" class="hidden pinned-container">
+    <button id="close-pinned" class="close-btn">&times;</button>
+    <div class="pinned-content">
       <h3>📍 Saved Locations</h3>
       <ul id="pinned-list"></ul>
     </div>
