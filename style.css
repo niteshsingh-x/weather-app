@@ -27,10 +27,11 @@ body {
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   width: 100%;
-  max-width: 450px; /* Slightly wider for better button spacing */
+  max-width: 450px;
   text-align: center;
   margin: 20px auto;
   backdrop-filter: blur(10px);
+  z-index: 1; /* Ensure it's below the floating card */
 }
 
 h1 {
@@ -41,32 +42,30 @@ h1 {
 }
 
 /* =========================================
-   Search Box & Buttons (Responsive)
+   Search Box & Buttons
    ========================================= */
 .search-box {
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping on small screens */
-  gap: 12px; /* Spacing between input and buttons */
+  flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 1.5rem;
-  align-items: stretch; /* Makes all elements same height */
+  align-items: stretch;
 }
 
 #city-input {
-  flex: 1 1 200px; /* Grows to fill space, shrinks to 200px min */
+  flex: 1 1 200px;
   padding: 14px;
   border: 2px solid #ddd;
   border-radius: 10px;
   font-size: 1rem;
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 0.3s;
 }
 
 #city-input:focus {
   border-color: #4caf50;
-  box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
 }
 
-/* Common Button Styles */
 button {
   padding: 14px 20px;
   border: none;
@@ -75,7 +74,7 @@ button {
   font-size: 1rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  white-space: nowrap; /* Prevents text wrapping inside buttons */
+  white-space: nowrap;
 }
 
 #search-btn {
@@ -87,7 +86,6 @@ button {
 #search-btn:hover {
   background: #45a049;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 #geo-btn {
@@ -99,7 +97,6 @@ button {
 #geo-btn:hover {
   background: #1976d2;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
 }
 
 /* =========================================
@@ -189,9 +186,6 @@ button {
   color: #333;
 }
 
-/* =========================================
-   Error Message
-   ========================================= */
 #error-msg {
   color: #ff5252;
   font-weight: 600;
@@ -203,22 +197,56 @@ button {
 }
 
 /* =========================================
-   Saved Locations Section
+   Saved Locations - Top Right Floating Card
    ========================================= */
-#saved-locations {
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 2px dashed #ddd;
-  text-align: left;
+.pinned-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideIn 0.4s ease-out;
+  border: 1px solid #eee;
 }
 
-#saved-locations h3 {
-  margin-bottom: 12px;
+.pinned-content {
+  padding: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.pinned-content h3 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
   color: #333;
-  font-size: 1.2rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 5px;
+  min-width: auto;
+}
+
+.close-btn:hover {
+  color: #ff5252;
+  transform: scale(1.2);
 }
 
 #pinned-list {
@@ -255,17 +283,9 @@ button {
   color: white;
 }
 
-#pinned-list button:hover {
-  transform: translateY(-1px);
-}
-
 #pinned-list button:last-of-type {
   background: #ff5252;
   color: white;
-}
-
-#pinned-list button:last-of-type:hover {
-  background: #d32f2f;
 }
 
 /* =========================================
@@ -274,6 +294,17 @@ button {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes shake {
@@ -285,28 +316,28 @@ button {
 /* =========================================
    Mobile Responsive Tweaks
    ========================================= */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .container {
     padding: 1.5rem;
     max-width: 95%;
   }
 
   .search-box {
-    flex-direction: column; /* Stack vertically on mobile */
+    flex-direction: column;
     gap: 10px;
   }
 
   #city-input, #search-btn, #geo-btn {
-    width: 100%; /* Full width buttons */
+    width: 100%;
     min-width: auto;
   }
 
-  #temp {
-    font-size: 2.8rem;
-  }
-
-  .details {
-    flex-direction: column;
-    gap: 10px;
+  /* Move pinned list to bottom on mobile to avoid overlap */
+  .pinned-container {
+    top: auto;
+    bottom: 20px;
+    right: 20px;
+    width: 90%;
+    max-width: 300px;
   }
 }
