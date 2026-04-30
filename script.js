@@ -29,11 +29,15 @@ async function checkWeather(city) {
     // Update UI
     cityNameEl.textContent = `${data.name}, ${data.sys.country}`;
     tempEl.textContent = `${Math.round(data.main.temp)}°C`;
+    
+    // ✅ FIX: Access the first item in the weather array 
     descEl.textContent = data.weather.description;
+    
     humidityEl.textContent = `${data.main.humidity}%`;
     windEl.textContent = `${data.wind.speed} km/h`;
     
     // Set icon
+    // ✅ FIX: Access the first item in the weather array 
     const iconCode = data.weather.icon;
     iconEl.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
