@@ -13,10 +13,15 @@
     <div class="search-box">
       <input type="text" id="city-input" placeholder="Enter city name..." />
       <button id="search-btn">Search</button>
+      <button id="geo-btn">📍 My Location</button>
     </div>
 
     <div id="weather-info" class="hidden">
-      <h2 id="city-name">--</h2>
+      <div class="header-row">
+        <h2 id="city-name">--</h2>
+        <button id="pin-btn" class="pin-btn">📌</button>
+      </div>
+      
       <div class="weather-icon">
         <img id="weather-icon" src="" alt="Weather Icon" />
       </div>
@@ -37,6 +42,12 @@
 
     <div id="error-msg" class="hidden">
       <p>🚫 City not found! Please try again.</p>
+    </div>
+
+    <!-- New: Saved Locations Section -->
+    <div id="saved-locations" class="hidden">
+      <h3>📍 Saved Locations</h3>
+      <ul id="pinned-list"></ul>
     </div>
   </div>
 
