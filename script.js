@@ -5,6 +5,7 @@ const cityInput = document.getElementById('city-input');
 const searchBtn = document.getElementById('search-btn');
 const geoBtn = document.getElementById('geo-btn');
 const pinBtn = document.getElementById('pin-btn');
+const closePinnedBtn = document.getElementById('close-pinned');
 const weatherInfo = document.getElementById('weather-info');
 const errorMsg = document.getElementById('error-msg');
 const savedLocationsDiv = document.getElementById('saved-locations');
@@ -25,8 +26,12 @@ let pinnedLocations = JSON.parse(localStorage.getItem('pinnedLocations')) || [];
 // Initialize
 function init() {
   renderPinnedLocations();
-  if (savedLocationsDiv.children.length > 0) {
-    savedLocationsDiv.classList.remove('hidden');
+  
+  // Close button logic
+  if (closePinnedBtn) {
+    closePinnedBtn.addEventListener('click', () => {
+      savedLocationsDiv.classList.add('hidden');
+    });
   }
   
   // Try to auto-detect location on load
@@ -38,7 +43,6 @@ function init() {
       },
       (error) => {
         console.log("Geolocation denied or error:", error);
-        // Optional: Show a message or skip
       }
     );
   }
@@ -56,12 +60,11 @@ async function checkWeather(city) {
     }
 
     const data = await response.json();
-    currentCity = data.name; // Store the exact name returned by API
+    currentCity = data.name; 
 
     updateUI(data);
     updatePinButton(currentCity);
     
-    // Show saved locations if there are any
     if (pinnedLocations.length > 0) {
       savedLocationsDiv.classList.remove('hidden');
     }
@@ -137,6 +140,7 @@ pinBtn.addEventListener('click', () => {
 // Render Pinned Locations List
 function renderPinnedLocations() {
   pinnedList.innerHTML = '';
+  
   if (pinnedLocations.length === 0) {
     savedLocationsDiv.classList.add('hidden');
     return;
@@ -148,27 +152,29 @@ function renderPinnedLocations() {
     const li = document.createElement('li');
     li.innerHTML = `
       <span>${city}</span>
-      <button onclick="loadPinnedCity('${city}')">Load</button>
-      <button onclick="removePinnedCity('${city}')">❌</button>
+      <div>
+        <button onclick="loadPinnedCity('${city}')">Load</button>
+        <button onclick="removePinnedCity('${city}')">❌</button>
+      </div>
     `;
     pinnedList.appendChild(li);
   });
 }
 
-// Load a pinned city (called from HTML onclick)
+// Load a pinned city (Global function for onclick in HTML)
 window.loadPinnedCity = function(city) {
   cityInput.value = city;
   checkWeather(city);
+  // Optional: Close the panel after loading
+  // savedLocationsDiv.classList.add('hidden'); 
 };
 
-// Remove a pinned city (called from HTML onclick)
+// Remove a pinned city (Global function for onclick in HTML)
 window.removePinnedCity = function(city) {
   pinnedLocations = pinnedLocations.filter(c => c !== city);
   localStorage.setItem('pinnedLocations', JSON.stringify(pinnedLocations));
   renderPinnedLocations();
-  if (pinnedLocations.length === 0) {
-    savedLocationsDiv.classList.add('hidden');
-  }
+  
   // If we removed the currently viewed city, update button state
   if (currentCity === city) {
     updatePinButton(currentCity);
