@@ -23,4 +23,4 @@ A real-time weather application built with HTML, CSS, and JavaScript that fetche
 3. Enter your city name and click "Search"
 
 ## API Key
-This app uses the OpenWeatherMap API. A free API provider 
+This app uses the OpenWeatherMap API. A free API source 
